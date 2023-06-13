@@ -38,9 +38,16 @@
 }
 
 .card-grid {
-  margin-top: 40px;
+  margin: 60px auto;
   display: flex;
   justify-content: space-between;
+}
+
+.used-card-grid {
+  margin: 10px auto;
+  display: flex;
+  justify-content: left;
+  
 }
 
 .card {

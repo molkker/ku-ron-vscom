@@ -35,13 +35,16 @@ function App() {
   const [playerChoice, setPlayerChoice] = useState(null)
   const [comChoice, setComChoice] = useState(null)
   const [flag, setflag] = useState(true)
-  const [turnPlayer, setTurnPlayer] = ("Player")
+  const [turnPlayer, setTurnPlayer] = useState("Player")
+  const [usedComCards, setUsedComCards] = useState([])
+  const [usedplayerCards, setUsedPlayerCards] = useState([])
 
   const comHandle = () => {
     // ランダムに選んだカードをcomChoiceにセット
     if (!flag) {
       setComChoice(comCards[Math.floor(Math.random()*comCards.length)])
       setflag(true)
+      setTurnPlayer("Player")
     } else {
       setTimeout(() => alert(`今はPlayerの手番です`), 1)
     }
@@ -50,9 +53,9 @@ function App() {
   useEffect(() => {
     if (comChoice) {
       if (comChoice.number % 2 === 0) {
-        setTimeout(() => alert(`Computerは偶数を選びました`), 1)
+          setTimeout(() => alert(`Computerは偶数を選びました`), 1)
       } else if (comChoice.number % 2 === 1) {
-        setTimeout(() => alert(`Computerは奇数を選びました`), 1)
+          setTimeout(() => alert(`Computerは奇数を選びました`), 1)
       }
     }
   },[comChoice])
@@ -62,11 +65,12 @@ function App() {
     if (flag) {
       setPlayerChoice(card)
       setflag(false)
+      setTurnPlayer("Computer")
     } else {
       setTimeout(() => alert(`今はComputerの手番です`), 1)
     }
   }
-
+  // playerChoiceとcomChoiceをリセット
   const resetTurns = () => {
     setPlayerChoice(null)
     setComChoice(null)
@@ -75,28 +79,42 @@ function App() {
   useEffect(() => {
     // playerChoiceとcomChoiceのnumberを比較
     if (playerChoice && comChoice) {
-      if(playerChoice.number > comChoice.number) {
+      if (playerChoice.number === 1 && comChoice.number === 9) {
         setTimeout(() => alert(`Playerの勝ち!!`), 1000)
         setflag(true)
+        setTimeout(setTurnPlayer("Player"),1000)
+      } else if (playerChoice.number === 9 && comChoice.number === 1) {
+        setTimeout(() => alert(`Computerの勝ち!!`), 1000)
+        setflag(false)
+        setTimeout(setTurnPlayer("Computer"),1000)
+      } else if(playerChoice.number > comChoice.number) {
+        setTimeout(() => alert(`Playerの勝ち!!`), 1000)
+        setflag(true)
+        setTimeout(setTurnPlayer("Player"),1000)
       } else if (playerChoice.number < comChoice.number) {
         setTimeout(() => alert(`Computerの勝ち!!`), 1000)
         setflag(false)
+        setTimeout(setTurnPlayer("Computer"),1000)
       } else {
         setTimeout(() => alert(`引き分け!!`), 1000)
         setflag(!flag)
       }
 
-      // comが使ったカードをcomCardsから削除
+      // comが使ったカードをcomCardsから削除し、usedComCardsに追加
       const NewComCards = comCards.filter(( choice ) => {
         return choice !== comChoice
       }) 
+      const NewUsedComCards = [...usedComCards, comChoice]
       setComCards(NewComCards)
+      setUsedComCards(NewUsedComCards)
 
-      // プレイヤーが使ったカードをplayerCardsから削除
+      // プレイヤーが使ったカードをplayerCardsから削除し、usedPlayerCardsに追加
       const NewPlayerCards = playerCards.filter(( choice ) => {
         return choice !== playerChoice
       })
+      const NewUsedPlayerCards = [...usedplayerCards, playerChoice]
       setPlayerCards(NewPlayerCards)
+      setUsedPlayerCards(NewUsedPlayerCards)
 
       resetTurns()
     }
@@ -117,6 +135,20 @@ function App() {
         </div>
       ))}
     </div>
+    <div className='used-card-grid'>
+      {usedComCards.map((card) => (
+        <div className="card" key={card.id}>
+            <img src={card.src} alt="カードの裏" />
+        </div>
+      ))}
+    </div>
+    <div className='used-card-grid'>
+      {usedplayerCards.map((card) => (
+        <div className="card" key={card.id}>
+            <img src={card.src} alt="カードの裏" />
+        </div>
+      ))}
+    </div>
     <div className='card-grid'>
       {playerCards.map((card) => (
         <div className="card" onClick={() => handleChoice(card)}  key={card.id}>
@@ -125,6 +157,7 @@ function App() {
       ))}
     </div>
     <h1>自分</h1>
+    
     </>
   )
 }
