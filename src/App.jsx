@@ -27,6 +27,12 @@ const ComCardImgs = [
   {"src":"/img/白.png", number:9, isOpen: false, id: Math.random()}
 ]
 
+const maru = {"src": "/img/○.jpg", id: Math.random()}
+
+const batsu = {"src": "/img/×.jpg", id: Math.random()}
+
+const draw = {"src": "/img/横線.jpg"}
+
 
 function App() {
 
@@ -38,6 +44,8 @@ function App() {
   const [turnPlayer, setTurnPlayer] = useState("Player")
   const [usedComCards, setUsedComCards] = useState([])
   const [usedplayerCards, setUsedPlayerCards] = useState([])
+  const [playerResult, setPlayerResult] = useState([])
+  const [comResult,setComresult] = useState([])
 
   const comHandle = () => {
     // ランダムに選んだカードをcomChoiceにセット
@@ -77,27 +85,58 @@ function App() {
   }
 
   useEffect(() => {
+    
     // playerChoiceとcomChoiceのnumberを比較
     if (playerChoice && comChoice) {
       if (playerChoice.number === 1 && comChoice.number === 9) {
         setTimeout(() => alert(`Playerの勝ち!!`), 1000)
         setflag(true)
         setTimeout(setTurnPlayer("Player"),1000)
+        // 勝敗の結果が見えるように表示
+        const NewPlayerResult = [...playerResult, maru]
+        const NewComResult = [...comResult, batsu]
+        setPlayerResult(NewPlayerResult)
+        setComresult(NewComResult)
+
       } else if (playerChoice.number === 9 && comChoice.number === 1) {
         setTimeout(() => alert(`Computerの勝ち!!`), 1000)
         setflag(false)
         setTimeout(setTurnPlayer("Computer"),1000)
+
+        const NewPlayerResult = [...playerResult, batsu]
+        const NewComResult = [...comResult, maru]
+        setPlayerResult(NewPlayerResult)
+        setComresult(NewComResult)
+
       } else if(playerChoice.number > comChoice.number) {
         setTimeout(() => alert(`Playerの勝ち!!`), 1000)
         setflag(true)
         setTimeout(setTurnPlayer("Player"),1000)
+
+        const NewPlayerResult = [...playerResult, maru]
+        const NewComResult = [...comResult, batsu]
+        setPlayerResult(NewPlayerResult)
+        setComresult(NewComResult)
+
       } else if (playerChoice.number < comChoice.number) {
         setTimeout(() => alert(`Computerの勝ち!!`), 1000)
         setflag(false)
         setTimeout(setTurnPlayer("Computer"),1000)
+
+        const NewPlayerResult = [...playerResult, batsu]
+        const NewComResult = [...comResult, maru]
+        setPlayerResult(NewPlayerResult)
+        setComresult(NewComResult)
+
       } else {
         setTimeout(() => alert(`引き分け!!`), 1000)
         setflag(!flag)
+
+        const NewPlayerResult = [...playerResult, draw]
+        const NewComResult = [...comResult, draw]
+        setPlayerResult(NewPlayerResult)
+        setComresult(NewComResult)
+
       }
 
       // comが使ったカードをcomCardsから削除し、usedComCardsに追加
@@ -136,6 +175,13 @@ function App() {
       ))}
     </div>
     <div className='used-card-grid'>
+      {comResult.map((card) => (
+        <div className="card" key={card.id}>
+            <img src={card.src} alt="結果" />
+        </div>
+      ))}
+    </div>
+    <div className='used-card-grid'>
       {usedComCards.map((card) => (
         <div className="card" key={card.id}>
             <img src={card.src} alt="カードの裏" />
@@ -146,6 +192,13 @@ function App() {
       {usedplayerCards.map((card) => (
         <div className="card" key={card.id}>
             <img src={card.src} alt="カードの裏" />
+        </div>
+      ))}
+    </div>
+    <div className='used-card-grid'>
+      {playerResult.map((card) => (
+        <div className="card" key={card.id}>
+            <img src={card.src} alt="結果" />
         </div>
       ))}
     </div>
