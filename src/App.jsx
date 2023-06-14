@@ -46,6 +46,8 @@ function App() {
   const [usedplayerCards, setUsedPlayerCards] = useState([])
   const [playerResult, setPlayerResult] = useState([])
   const [comResult,setComresult] = useState([])
+  const [whichComSelect, setWhichComSelect] = useState("")
+  const [winner, setWinner] = useState("")
 
   const comHandle = () => {
     // ランダムに選んだカードをcomChoiceにセット
@@ -57,13 +59,14 @@ function App() {
       setTimeout(() => alert(`今はPlayerの手番です`), 1)
     }
   }
+
     // comが選んだカードが奇数か偶数かを出力
   useEffect(() => {
     if (comChoice) {
       if (comChoice.number % 2 === 0) {
-          setTimeout(() => alert(`Computerは偶数を選びました`), 1)
+          setWhichComSelect("Computerは偶数を選びました")
       } else if (comChoice.number % 2 === 1) {
-          setTimeout(() => alert(`Computerは奇数を選びました`), 1)
+          setWhichComSelect("Computerは奇数を選びました")
       }
     }
   },[comChoice])
@@ -78,64 +81,67 @@ function App() {
       setTimeout(() => alert(`今はComputerの手番です`), 1)
     }
   }
+
+  // プレイヤーが勝ったときに呼び出す関数
+  const playerWin = () => {
+    setWinner("Playerの勝ち!!")
+    setflag(true)
+    setTurnPlayer("Player")
+    // 勝敗が見えるように表示
+    const NewPlayerResult = [...playerResult, maru]
+    const NewComResult = [...comResult, batsu]
+    setPlayerResult(NewPlayerResult)
+    setComresult(NewComResult)
+  }
+
+  // コンピュータが勝ったときに呼び出す関数
+  const comWin = () => {
+    setWinner("Computerの勝ち!!")
+    setflag(false)
+    setTurnPlayer("Computer")
+    // 勝敗が見えるように表示
+    const NewPlayerResult = [...playerResult, batsu]
+    const NewComResult = [...comResult, maru]
+    setPlayerResult(NewPlayerResult)
+    setComresult(NewComResult)
+  }
+  // 引き分けのときに呼び出す関数
+  const drawGame = () => {
+    setWinner("引き分け!!")
+    // 勝敗が見えるように表示
+    const NewPlayerResult = [...playerResult, draw]
+    const NewComResult = [...comResult, draw]
+    setPlayerResult(NewPlayerResult)
+    setComresult(NewComResult)
+  }
+
   // playerChoiceとcomChoiceをリセット
   const resetTurns = () => {
     setPlayerChoice(null)
     setComChoice(null)
+    setWhichComSelect("")
+    setWinner("")
   }
 
   useEffect(() => {
     
     // playerChoiceとcomChoiceのnumberを比較
     if (playerChoice && comChoice) {
+      // プレイヤーが１で勝ったとき
       if (playerChoice.number === 1 && comChoice.number === 9) {
-        setTimeout(() => alert(`Playerの勝ち!!`), 1000)
-        setflag(true)
-        setTimeout(setTurnPlayer("Player"),1000)
-        // 勝敗の結果が見えるように表示
-        const NewPlayerResult = [...playerResult, maru]
-        const NewComResult = [...comResult, batsu]
-        setPlayerResult(NewPlayerResult)
-        setComresult(NewComResult)
-
+        setTimeout(playerWin, 2000)
+      // コンピュータが１で勝ったとき
       } else if (playerChoice.number === 9 && comChoice.number === 1) {
-        setTimeout(() => alert(`Computerの勝ち!!`), 1000)
-        setflag(false)
-        setTimeout(setTurnPlayer("Computer"),1000)
-
-        const NewPlayerResult = [...playerResult, batsu]
-        const NewComResult = [...comResult, maru]
-        setPlayerResult(NewPlayerResult)
-        setComresult(NewComResult)
-
+        setTimeout(comWin, 2000)
+      // プレイヤーが勝ったとき
       } else if(playerChoice.number > comChoice.number) {
-        setTimeout(() => alert(`Playerの勝ち!!`), 1000)
-        setflag(true)
-        setTimeout(setTurnPlayer("Player"),1000)
-
-        const NewPlayerResult = [...playerResult, maru]
-        const NewComResult = [...comResult, batsu]
-        setPlayerResult(NewPlayerResult)
-        setComresult(NewComResult)
-
+        setTimeout(playerWin, 2000)
+      // コンピュータが勝ったとき
       } else if (playerChoice.number < comChoice.number) {
-        setTimeout(() => alert(`Computerの勝ち!!`), 1000)
-        setflag(false)
-        setTimeout(setTurnPlayer("Computer"),1000)
-
-        const NewPlayerResult = [...playerResult, batsu]
-        const NewComResult = [...comResult, maru]
-        setPlayerResult(NewPlayerResult)
-        setComresult(NewComResult)
-
+        setTimeout(comWin, 2000)
+      // 引き分けのとき
       } else {
-        setTimeout(() => alert(`引き分け!!`), 1000)
-
-        const NewPlayerResult = [...playerResult, draw]
-        const NewComResult = [...comResult, draw]
-        setPlayerResult(NewPlayerResult)
-        setComresult(NewComResult)
-
+        setTimeout(drawGame, 2000)
       }
 
       // comが使ったカードをcomCardsから削除し、usedComCardsに追加
@@ -154,7 +160,7 @@ function App() {
       setPlayerCards(NewPlayerCards)
       setUsedPlayerCards(NewUsedPlayerCards)
 
-      resetTurns()
+      setTimeout(resetTurns, 4000)
     }
   }, [playerChoice, comChoice])
 
@@ -162,6 +168,8 @@ function App() {
   return (
     <>
     <p>{turnPlayer}の番です</p>
+    <p>{whichComSelect}</p>
+    <p>{winner}</p>
     <div>
       <button onClick={() => comHandle()}>コンピュータが選ぶ</button>
     </div>
