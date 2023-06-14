@@ -52,6 +52,7 @@ function App() {
   const [pWinCount, setPWinCount] = useState(0)
   const [cWinCount, setCWinCount] = useState(0)
   const [drawCount, setDrawCount] = useState(0)
+  const [disabled, setDisabled] = useState(false)
 
   // 手札をシャッフル
   useEffect(() => {
@@ -61,12 +62,14 @@ function App() {
 
   // flagがfalseならランダムに選んだカードをcomChoiceにセット
   const comHandle = () => {
-    if (!flag) {
-      setComChoice(comCards[Math.floor(Math.random()*comCards.length)])
-      setflag(true)
-      setTurnPlayer("Player")
-    } else {
-      alert(`今はPlayerの手番です`)
+    if (!disabled) {
+      if (!flag) {
+        setComChoice(comCards[Math.floor(Math.random()*comCards.length)])
+        setflag(true)
+        setTurnPlayer("Player")
+      } else {
+        alert(`今はPlayerの手番です`)
+      }
     }
   }
 
@@ -83,12 +86,14 @@ function App() {
   
   // flagがtrueなら選んだカードをPlayerChoiceにセット
   const handleChoice = (card) => {
-    if (flag) {
-      setPlayerChoice(card)
-      setflag(false)
-      setTurnPlayer("Computer")
-    } else {
-      alert(`今はComputerの手番です`)
+    if (!disabled) {
+      if (flag) {
+        setPlayerChoice(card)
+        setflag(false)
+        setTurnPlayer("Computer")
+      } else {
+        alert(`今はComputerの手番です`)
+      }
     }
   }
 
@@ -147,6 +152,7 @@ function App() {
       setWhichComSelect("")
       setWinner("")
       setRound(round + 1)
+      setDisabled(false)
     }
   }
   // コンピュータが勝ったときのリセットの関数
@@ -161,6 +167,7 @@ function App() {
       setWhichComSelect("")
       setWinner("")
       setRound(round + 1)
+      setDisabled(false)
     }
   }
   // 引き分けだった時のリセットの関数
@@ -177,12 +184,14 @@ function App() {
       setWhichComSelect("")
       setWinner("")
       setRound(round + 1)
+      setDisabled(false)
     }
   }
 
   useEffect(() => {
     // playerChoiceとcomChoiceのnumberを比較
     if (playerChoice && comChoice) {
+      setDisabled(true)
       // プレイヤーが１で勝ったとき
       if (playerChoice.number === 1 && comChoice.number === 9) {
         setTimeout(playerWin, 2000)
