@@ -167,11 +167,11 @@ function App() {
 
   return (
     <>
-    <h2>{turnPlayer}の番です</h2>
+    <h2>{turnPlayer}はカードを選んでください</h2>
     <h3>{whichComSelect}</h3>
     <h3>{winner}</h3>
     <div>
-      <button onClick={() => comHandle()}>コンピュータが選ぶ</button>
+      <button onClick={() => comHandle()}>Computerがカードを選ぶ</button>
     </div>
     <h1>相手</h1>
     {/* コンピュータの手札を表示 */}
