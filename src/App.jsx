@@ -130,7 +130,6 @@ function App() {
 
       } else {
         setTimeout(() => alert(`引き分け!!`), 1000)
-        setflag(!flag)
 
         const NewPlayerResult = [...playerResult, draw]
         const NewComResult = [...comResult, draw]
