@@ -167,9 +167,9 @@ function App() {
 
   return (
     <>
-    <p>{turnPlayer}の番です</p>
-    <p>{whichComSelect}</p>
-    <p>{winner}</p>
+    <h2>{turnPlayer}の番です</h2>
+    <h3>{whichComSelect}</h3>
+    <h3>{winner}</h3>
     <div>
       <button onClick={() => comHandle()}>コンピュータが選ぶ</button>
     </div>
