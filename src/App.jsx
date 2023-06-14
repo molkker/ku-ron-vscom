@@ -166,6 +166,7 @@ function App() {
       <button onClick={() => comHandle()}>コンピュータが選ぶ</button>
     </div>
     <h1>相手</h1>
+    {/* コンピュータの手札を表示 */}
     <div className='card-grid'>
       {comCards.map((card) => (
         <div className="card" key={card.id}>
@@ -173,6 +174,7 @@ function App() {
         </div>
       ))}
     </div>
+    {/* コンピュータの出した手札の勝敗を表示 */}
     <div className='used-card-grid'>
       {comResult.map((card) => (
         <div className="card" key={card.id}>
@@ -180,6 +182,7 @@ function App() {
         </div>
       ))}
     </div>
+    {/* コンピュータの出したカードを表示 */}
     <div className='used-card-grid'>
       {usedComCards.map((card) => (
         <div className="card" key={card.id}>
@@ -187,6 +190,7 @@ function App() {
         </div>
       ))}
     </div>
+    {/* プレイヤーの出したカードを表示 */}
     <div className='used-card-grid'>
       {usedplayerCards.map((card) => (
         <div className="card" key={card.id}>
@@ -194,6 +198,7 @@ function App() {
         </div>
       ))}
     </div>
+    {/* プレイヤーの出したカードの結果を表示 */}
     <div className='used-card-grid'>
       {playerResult.map((card) => (
         <div className="card" key={card.id}>
@@ -201,6 +206,7 @@ function App() {
         </div>
       ))}
     </div>
+    {/* プレイヤーの手札を表示 */}
     <div className='card-grid'>
       {playerCards.map((card) => (
         <div className="card" onClick={() => handleChoice(card)}  key={card.id}>
