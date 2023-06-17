@@ -48,7 +48,7 @@ function App() {
   const [comChoice, setComChoice] = useState(null)
   const [usedComCards, setUsedComCards] = useState([])
   const [comResult,setComresult] = useState([])
-  const [whichComSelect, setWhichComSelect] = useState("")
+  const [isBackgroundOrTable, setIsBackgroundOrTable] = useState("")
   const [cWinCount, setCWinCount] = useState(0)
 
   // その他システム管理
@@ -82,9 +82,9 @@ function App() {
   useEffect(() => {
     if (comChoice) {
       if (comChoice.number % 2 === 0) {
-          setWhichComSelect("Computerは偶数を選びました")
+          setIsBackgroundOrTable("Computerは偶数を選びました")
       } else if (comChoice.number % 2 === 1) {
-          setWhichComSelect("Computerは奇数を選びました")
+          setIsBackgroundOrTable("Computerは奇数を選びました")
       }
     }
   },[comChoice])
@@ -154,7 +154,7 @@ function App() {
     } else {
       setPlayerChoice(null)
       setComChoice(null)
-      setWhichComSelect("")
+      setIsBackgroundOrTable("")
       setWinner("")
       setRound(round + 1)
       setOperationImpossible(false)
@@ -170,7 +170,7 @@ function App() {
     } else {
       setPlayerChoice(null)
       setComChoice(null)
-      setWhichComSelect("")
+      setIsBackgroundOrTable("")
       setWinner("")
       setRound(round + 1)
       setOperationImpossible(false)
@@ -188,7 +188,7 @@ function App() {
     } else {
       setPlayerChoice(null)
       setComChoice(null)
-      setWhichComSelect("")
+      setIsBackgroundOrTable("")
       setWinner("")
       setRound(round + 1)
       setOperationImpossible(false)
@@ -241,7 +241,7 @@ function App() {
     <>
     <h1>Round{round}</h1>
     <h2>{turnPlayer}はカードを選んでください</h2>
-    <h3>{whichComSelect}</h3>
+    <h3>{isBackgroundOrTable}</h3>
     <h3>{winner}</h3>
     <div>
       <button onClick={() => comHandle()}>Computerがカードを選ぶ</button>
