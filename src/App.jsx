@@ -56,7 +56,7 @@ function App() {
   const [winner, setWinner] = useState("")
   const [round, setRound] = useState(1)
   const [drawCount, setDrawCount] = useState(0)
-  const [turnPlayer, setTurnPlayer] = useState("Player")
+  const [turnPlayer, setTurnPlayer] = useState("プレイヤー")
   const [operationImpossible, setOperationImpossible] = useState(false)
 
   // 手札をシャッフル
