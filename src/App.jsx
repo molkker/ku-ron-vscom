@@ -42,21 +42,22 @@ function App() {
   const [usedplayerCards, setUsedPlayerCards] = useState([])
   const [playerResult, setPlayerResult] = useState([])
   const [pWinCount, setPWinCount] = useState(0)
-  
-  // COM側の状態管理
-  const [comCards, setComCards] = useState(ComCardImgs)
+
+  // コンピュータ側の状態管理
+  const [comCards, setComCards] = useState(ComCardImgs) 
   const [comChoice, setComChoice] = useState(null)
   const [usedComCards, setUsedComCards] = useState([])
   const [comResult,setComresult] = useState([])
-  const [cWinCount, setCWinCount] = useState(0)
   const [whichComSelect, setWhichComSelect] = useState("")
-  
-  const [turnPlayer, setTurnPlayer] = useState("Player")
-  const [flag, setflag] = useState(true)
+  const [cWinCount, setCWinCount] = useState(0)
+
+  // その他システム管理
+  const [turnSwitching, setTurnSwitching] = useState(true)
   const [winner, setWinner] = useState("")
   const [round, setRound] = useState(1)
   const [drawCount, setDrawCount] = useState(0)
-  const [disabled, setDisabled] = useState(false)
+  const [turnPlayer, setTurnPlayer] = useState("Player")
+  const [operationImpossible, setOperationImpossible] = useState(false)
 
   // 手札をシャッフル
   useEffect(() => {
@@ -64,12 +65,12 @@ function App() {
     setComCards(comCards.sort(() =>  Math.random() - 0.5))
   }, [])
 
-  // flagがfalseならランダムに選んだカードをcomChoiceにセット
+  // turnSwitchingがfalseならランダムに選んだカードをcomChoiceにセット
   const comHandle = () => {
-    if (!disabled) {
-      if (!flag) {
+    if (!operationImpossible) {
+      if (!turnSwitching) {
         setComChoice(comCards[Math.floor(Math.random()*comCards.length)])
-        setflag(true)
+        setTurnSwitching(true)
         setTurnPlayer("Player")
       } else {
         alert(`今はPlayerの手番です`)
@@ -88,12 +89,12 @@ function App() {
     }
   },[comChoice])
   
-  // flagがtrueなら選んだカードをPlayerChoiceにセット
+  // turnSwitchingがtrueなら選んだカードをPlayerChoiceにセット
   const handleChoice = (card) => {
-    if (!disabled) {
-      if (flag) {
+    if (!operationImpossible) {
+      if (turnSwitching) {
         setPlayerChoice(card)
-        setflag(false)
+        setTurnSwitching(false)
         setTurnPlayer("Computer")
       } else {
         alert(`今はComputerの手番です`)
@@ -104,7 +105,7 @@ function App() {
   // プレイヤーが勝ったときに呼び出す関数
   const playerWin = () => {
     setWinner("Playerの勝ち!!")
-    setflag(true)
+    setTurnSwitching(true)
     setTurnPlayer("Player")
     setPWinCount(pWinCount + 1)
     // 勝敗が見えるように表示
@@ -119,7 +120,7 @@ function App() {
   // コンピュータが勝ったときに呼び出す関数
   const comWin = () => {
     setWinner("Computerの勝ち!!")
-    setflag(false)
+    setTurnSwitching(false)
     setTurnPlayer("Computer")
     setCWinCount(cWinCount + 1)
     // 勝敗が見えるように表示
@@ -156,7 +157,7 @@ function App() {
       setWhichComSelect("")
       setWinner("")
       setRound(round + 1)
-      setDisabled(false)
+      setOperationImpossible(false)
     }
   }
 
@@ -172,10 +173,10 @@ function App() {
       setWhichComSelect("")
       setWinner("")
       setRound(round + 1)
-      setDisabled(false)
+      setOperationImpossible(false)
     }
   }
-  
+
   // 引き分けだった時のリセットの関数
   const resetDrawTurns = () => {
     if ((9 - (drawCount + 1)) / 2 < pWinCount) {
@@ -190,14 +191,14 @@ function App() {
       setWhichComSelect("")
       setWinner("")
       setRound(round + 1)
-      setDisabled(false)
+      setOperationImpossible(false)
     }
   }
 
   useEffect(() => {
     // playerChoiceとcomChoiceのnumberを比較
     if (playerChoice && comChoice) {
-      setDisabled(true)
+      setOperationImpossible(true)
       // プレイヤーが１で勝ったとき
       if (playerChoice.number === 1 && comChoice.number === 9) {
         setTimeout(playerWin, 2000)
