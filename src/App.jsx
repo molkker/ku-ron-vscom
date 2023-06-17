@@ -36,21 +36,25 @@ const draw = {"src": "/img/横線.jpg"}
 
 function App() {
 
+  // プレイヤー側の状態管理
   const [playerCards, setPlayerCards] = useState(playerCardImgs)
-  const [comCards, setComCards] = useState(ComCardImgs)
   const [playerChoice, setPlayerChoice] = useState(null)
-  const [comChoice, setComChoice] = useState(null)
-  const [flag, setflag] = useState(true)
-  const [turnPlayer, setTurnPlayer] = useState("Player")
-  const [usedComCards, setUsedComCards] = useState([])
   const [usedplayerCards, setUsedPlayerCards] = useState([])
   const [playerResult, setPlayerResult] = useState([])
+  const [pWinCount, setPWinCount] = useState(0)
+  
+  // COM側の状態管理
+  const [comCards, setComCards] = useState(ComCardImgs)
+  const [comChoice, setComChoice] = useState(null)
+  const [usedComCards, setUsedComCards] = useState([])
   const [comResult,setComresult] = useState([])
+  const [cWinCount, setCWinCount] = useState(0)
   const [whichComSelect, setWhichComSelect] = useState("")
+  
+  const [turnPlayer, setTurnPlayer] = useState("Player")
+  const [flag, setflag] = useState(true)
   const [winner, setWinner] = useState("")
   const [round, setRound] = useState(1)
-  const [pWinCount, setPWinCount] = useState(0)
-  const [cWinCount, setCWinCount] = useState(0)
   const [drawCount, setDrawCount] = useState(0)
   const [disabled, setDisabled] = useState(false)
 
@@ -155,6 +159,7 @@ function App() {
       setDisabled(false)
     }
   }
+
   // コンピュータが勝ったときのリセットの関数
   const resetComWonTurns = () => {
     if ((9 - drawCount) / 2 < cWinCount + 1) {
@@ -170,6 +175,7 @@ function App() {
       setDisabled(false)
     }
   }
+  
   // 引き分けだった時のリセットの関数
   const resetDrawTurns = () => {
     if ((9 - (drawCount + 1)) / 2 < pWinCount) {
