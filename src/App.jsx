@@ -199,7 +199,7 @@ function App() {
       } else if (playerChoice.number === 9 && comChoice.number === 1) {
         setTimeout(comWin, 2000)
       // プレイヤーが勝ったとき
-      } else if(playerChoice.number > comChoice.number) {
+      } else if (playerChoice.number > comChoice.number) {
         setTimeout(playerWin, 2000)
       // コンピュータが勝ったとき
       } else if (playerChoice.number < comChoice.number) {
